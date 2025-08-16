@@ -1,0 +1,1 @@
+weblate[all]>=5.12
