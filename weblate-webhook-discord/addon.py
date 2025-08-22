@@ -14,6 +14,9 @@ if TYPE_CHECKING:
 def user_avatar_url(user: User) -> str:
     return get_site_url(reverse("user_avatar", kwargs={"user": user.username, "size": 32}))
 
+def discord_escape(s: str) -> str:
+    return s.replace("\\", "\\\\")
+
 class DiscordWebhookAddon(JSONWebhookBaseAddon):
     name = "weblate.webhook.discord"
     verbose = "Discord Webhooks"
@@ -53,20 +56,20 @@ class DiscordWebhookAddon(JSONWebhookBaseAddon):
         if change.unit:
             embed["fields"].append({
                 "name": "Source",
-                "value": change.unit.source,
+                "value": discord_escape(change.unit.source),
             })
 
         if change.old:
             embed["fields"].append({
                 "name": "Old",
-                "value": change.old,
+                "value": discord_escape(change.old),
                 "inline": True,
             })
         
         if change.target:
             embed["fields"].append({
                 "name": "New",
-                "value": change.target,
+                "value": discord_escape(change.target),
                 "inline": True,
             })
 
